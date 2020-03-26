@@ -1,0 +1,66 @@
+version: "3.4"
+
+services:
+    mongos:
+        container_name: "mongos_main"
+        build: .
+        ports:
+            - 27018:27018
+        depends_on:
+            - mongo_cfg_1
+            - mongo_cfg_2
+            - mongo_cfg_3
+            - mongo_rs_1
+            - mongo_rs_2
+            - mongo_rs_3
+        links:
+            - mongo_cfg_1
+            - mongo_cfg_2
+            - mongo_cfg_3
+            - mongo_rs_1
+            - mongo_rs_2
+            - mongo_rs_3
+        environment:
+            MONGO_CONFIG_DB: mongo_cfg_1:27117,mongo_cfg_2:27217,mongo_cfg_3:27317
+    
+    mongo_cfg_1:
+        container_name: "mongos_mongo_cfg_1"
+        image: mongo:3.0.15
+        ports:
+            - 27117
+        command: --configsvr --port 27117
+    
+    mongo_cfg_2:
+        container_name: "mongos_mongo_cfg_2"
+        image: mongo:3.0.15
+        ports:
+            - 27217
+        command: --configsvr --port 27217
+    
+    mongo_cfg_3:
+        container_name: "mongos_mongo_cfg_3"
+        image: mongo:3.0.15
+        ports:
+            - 27317
+        command: --configsvr --port 27317
+    
+    mongo_rs_1:
+        container_name: "mongos_mongo_rs_1"
+        image: mongo:3.0.15
+        ports:
+            - 27417
+        command: --port 27417
+    
+    mongo_rs_2:
+        container_name: "mongos_mongo_rs_2"
+        image: mongo:3.0.15
+        ports:
+            - 27517
+        command: --port 27517
+    
+    mongo_rs_3:
+        container_name: "mongos_mongo_rs_3"
+        image: mongo:3.0.15
+        ports:
+            - 27617
+        command: --port 27617
